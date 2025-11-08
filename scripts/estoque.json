@@ -1,0 +1,14 @@
+[
+  {
+    "nome": "teste",
+    "quantidade": 12,
+    "estoqueMedio": 12,
+    "id": 1
+  },
+  {
+    "nome": "pão de forma",
+    "quantidade": 13,
+    "estoqueMedio": 6,
+    "id": 2
+  }
+]
