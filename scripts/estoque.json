@@ -10,5 +10,11 @@
     "quantidade": 13,
     "estoqueMedio": 6,
     "id": 2
+  },
+  {
+    "nome": "ajuste1",
+    "quantidade": 15,
+    "estoqueMedio": 10,
+    "id": 3
   }
 ]

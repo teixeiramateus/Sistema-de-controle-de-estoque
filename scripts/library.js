@@ -6,9 +6,9 @@ function definirCaminhoArquivo() {
 }
 
 function pegarDados() {
-const Json = definirCaminhoArquivo();
+const caminho = definirCaminhoArquivo();
     let produtos = []
-    const conteudo = fs.readFileSync(Json, 'utf8');
+    const conteudo = fs.readFileSync(caminho, 'utf8');
     if (conteudo.trim() !== '') {
      produtos = JSON.parse(conteudo);
      return produtos;
@@ -31,12 +31,12 @@ function gerarId() {
 
 function escreverNovosDados(novoProduto) {
   novoProduto.id = gerarId();
-  const Json = definirCaminhoArquivo();
+  const caminho = definirCaminhoArquivo();
   const produtos = pegarDados();
 
     produtos.push(novoProduto);
     try {
-    fs.writeFileSync(Json, JSON.stringify(produtos, null, 2));
+    fs.writeFileSync(caminho, JSON.stringify(produtos, null, 2));
     return {sucesso:true, mensagem: 'Produto adicionado com sucesso!'};
     }
     catch (err) {
