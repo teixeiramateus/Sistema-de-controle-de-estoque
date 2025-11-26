@@ -29,6 +29,11 @@ app.post('/adicionarproduto', (req, res) => {
   }
 })
 
+app.get('/listarprodutos', (req, res) => {
+  const produtos = pegarDados();
+  res.json(produtos);
+});
+
 app.listen(PORT, () => {
   console.log(` Servidor rodando em http://localhost:${PORT}`);
 });

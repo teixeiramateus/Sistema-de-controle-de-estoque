@@ -42,7 +42,7 @@ a.botao:hover {
     transform: scale(1.05);
 }
 
-form {
+#formulario-registro {
     max-width: 400px;
     margin: 40px auto;
     background-color: #faf9f8;
@@ -59,8 +59,8 @@ label {
     font-weight: bold;
 }
 
-input[type="text"],
-input[type="number"] {
+#nome-registro,
+#quantidade-registro {
     width: 100%;
     padding: 10px;
     border: 1px solid #cbb69d;
@@ -105,4 +105,24 @@ input[type="submit"]:hover {
         margin: 10px auto;
         width: 80%;
     }
+}
+.linha-produto {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    margin: 10px 0;
+    font-size: 18px;
+}
+
+.info-produto {
+    min-width: 320px;
+    font-weight: bold;
+}
+
+.input-qtd {
+    width: 80px;
+    height: 30px;
+    padding: 5px;
+    border: 1px solid #d0b28b;
+    border-radius: 5px;
 }
