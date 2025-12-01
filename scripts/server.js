@@ -1,4 +1,4 @@
-const {definirCaminhoArquivo, pegarDados, escreverNovosDados, gerarId} = require('./library.js');
+const {definirCaminhoArquivo, pegarDados, escreverNovosDados, gerarId, atualizarEstoque} = require('./library.js');
 
 const express = require('express');
 const path = require('path');
@@ -33,6 +33,19 @@ app.get('/listarprodutos', (req, res) => {
   const produtos = pegarDados();
   res.json(produtos);
 });
+
+app.post('/alterarEstoque', (req, res) => {
+  const novoEstoque = req.body;
+  
+  const resultado=atualizarEstoque(novoEstoque);
+
+  if (resultado.sucesso) {
+    res.json({ mensagem: resultado.mensagem });
+  } else {
+    res.status(500).json({ mensagem: resultado.mensagem });
+  }
+  
+})
 
 app.listen(PORT, () => {
   console.log(` Servidor rodando em http://localhost:${PORT}`);

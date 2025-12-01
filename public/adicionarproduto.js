@@ -25,6 +25,7 @@ async function enviarDados() {
     });
     const resultado = await resposta.json();
     alert(resultado.mensagem);
+    window.location.href='inicial.html';
 }
 
 impedirRecarregamento();

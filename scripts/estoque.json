@@ -1,19 +1,19 @@
 [
   {
     "nome": "teste",
-    "quantidade": 12,
+    "quantidade": 2,
     "estoqueMedio": 12,
     "id": 1
   },
   {
     "nome": "pão de forma",
-    "quantidade": 13,
+    "quantidade": 20,
     "estoqueMedio": 6,
     "id": 2
   },
   {
     "nome": "ajuste1",
-    "quantidade": 15,
+    "quantidade": 20,
     "estoqueMedio": 10,
     "id": 3
   }

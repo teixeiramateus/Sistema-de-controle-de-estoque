@@ -1,10 +1,10 @@
-async function pegarDados() {
+async function receberDados() {
     const res = await fetch('/listarprodutos');
     return await res.json();
 }
 
 async function carregarProdutos() {
-    let produtos = await pegarDados();
+    let produtos = await receberDados();
     const lista = document.getElementById('listaprodutos');
     lista.innerHTML = '';
 
@@ -17,7 +17,7 @@ async function carregarProdutos() {
 
    produtos.forEach(produto => {
     const item = document.createElement('span');
-    item.textContent = `ID: ${produto.id} | ${produto.nome} | Estoque: ${produto.quantidade}`;
+    item.textContent = `ID: ${produto.id} | ${produto.nome} | Estoque Médio: ${produto.estoqueMedio} | Estoque: ${produto.quantidade}`;
 
     const caixa = document.createElement('input');
     caixa.type = 'number';
@@ -60,4 +60,61 @@ async function carregarProdutos() {
 });
 }
 
+function pegarDados() {
+    let novoEstoque = [];
+    const linhas = document.querySelectorAll('.linha-produto');
+   for (const linha of linhas) {
+
+        const textoSpan = linha.querySelector('span').textContent;
+
+        const quantidadeInput = linha.querySelector(`input[type="number"]`);
+
+        if (!quantidadeInput.value) {
+            continue;        
+        }
+
+        const quantidadeModificada = parseInt(quantidadeInput.value);
+
+        const id = textoSpan.split('|')[0].split(':')[1].trim();
+        const estoqueInicial = parseInt(textoSpan.split('|')[3].split(':')[1].trim());
+
+
+        const operacaoAdicionar = linha.querySelector(`input[value="adicionar"]`);
+        const operacaoRemover = linha.querySelector(`input[value="remover"]`);
+
+        if (operacaoRemover.checked && quantidadeModificada > estoqueInicial) {
+            return `Não é possível remover mais do que o estoque atual para o produto ID: ${id}`;
+        }
+
+        if (isNaN(quantidadeModificada) || (!operacaoAdicionar.checked && !operacaoRemover.checked)) {
+            return `Por favor, preencha a quantidade e selecione uma operação para o produto ID: ${id}`;
+        }
+
+        novoEstoque.push({
+            id: parseInt(id),
+            quantidadeModificada: quantidadeModificada,
+            operacao: operacaoAdicionar.checked ? 'adicionar' : 'remover'
+        });
+    }
+
+    return novoEstoque;
+}
+
+async function enviarDados() {
+    let novoEstoque=pegarDados()
+    if (typeof novoEstoque === 'string') {
+        alert(novoEstoque);
+        return;
+    }
+    const resposta=await fetch('/alterarEstoque', {
+        method: 'POST',
+        headers: {
+            'Content-type': 'application/json'
+        },
+        body: JSON.stringify(novoEstoque)
+        });
+    const resultado=await resposta.json();
+    alert(resultado.mensagem);
+    window.location.href='inicial.html';
+}
 carregarProdutos();

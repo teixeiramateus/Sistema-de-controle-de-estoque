@@ -59,6 +59,7 @@ label {
     font-weight: bold;
 }
 
+#estoqueMedio,
 #nome-registro,
 #quantidade-registro {
     width: 100%;
@@ -125,4 +126,16 @@ input[type="submit"]:hover {
     padding: 5px;
     border: 1px solid #d0b28b;
     border-radius: 5px;
+}
+.estoque-muito-baixo {
+    color: #ff4d4d;
+    font-weight: bold;
+}
+.estoque-baixo {
+    color: #ffb84d;
+    font-weight: bold;
+}
+.estoque-suficiente {
+    color: #006108;
+    font-weight: bold;
 }
