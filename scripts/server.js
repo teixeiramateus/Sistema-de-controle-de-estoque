@@ -1,51 +1,84 @@
-const {definirCaminhoArquivo, pegarDados, escreverNovosDados, gerarId, atualizarEstoque} = require('./library.js');
-
 const express = require('express');
-const path = require('path');
-const fs = require('fs');
+const sqlite = require('sqlite3').verbose();
 const app = express();
 const PORT = process.env.PORT || 3000;
 
 app.use(express.json());
 
-app.use(express.static(path.join(__dirname, '../public')));
+const db = new sqlite.Database("bancoDeDados.sqlite");
 
-app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, '../public/inicial.html'));
-});
-
-app.post('/adicionarproduto', (req, res) => {
-  const novoProduto = req.body; 
-
-  if (!novoProduto.nome || !novoProduto.quantidade || !novoProduto.estoqueMedio) {
-    return res.status(400).json({ mensagem: 'Dados incompletos' });
+const validarBody = (req,res,next) =>{
+  if (!req.body || Object.keys(req.body).length === 0) {
+    return res.status(400).json({erro:"body não encontrado"})
   }
- const resultado=escreverNovosDados(novoProduto);
+  next()
+}
 
- if (resultado.sucesso) {
-    res.json({ mensagem: resultado.mensagem });
-  } else {
-    res.status(500).json({ mensagem: resultado.mensagem });
+const validarId = (req,res,next) => {
+  if (isNaN(req.params.id)) {
+    return res.status(400).json({erro:"id inválido"})
   }
+  next()
+}
+
+db.serialize(() => {
+db.run(`
+  CREATE TABLE IF NOT EXISTS estoque(
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  nome TEXT NOT NULL,
+  estoque INTEGER,
+  estoqueMedio INTEGER
+  )
+  `)});
+
+
+app.post('/estoque', validarBody, (req, res) => {
+  const {nome,estoque,estoqueMedio} = req.body
+
+  const sql = `INSERT INTO estoque (nome, estoque, estoqueMedio) VALUES(?, ?, ?);`
+
+  db.run(sql,[nome,estoque,estoqueMedio], function (err) {
+    if (err) {
+       return res.status(500).json({erro:"erro de servidor"})
+    }
+
+    return res.status(201).json({id: this.lastID, nome, estoque, estoqueMedio})
+  })
 })
 
-app.get('/listarprodutos', (req, res) => {
-  const produtos = pegarDados();
-  res.json(produtos);
+app.get('/estoque', (req, res) => {
+  const sql = `SELECT * FROM estoque;`
+
+  db.all(sql,[], function(err,rows) {
+    if (err) {
+      return res.status(500).json({erro:"erro de servidor"})
+    }
+    res.status(200).json(rows)
+  })
 });
 
-app.post('/alterarEstoque', (req, res) => {
-  const novoEstoque = req.body;
-  
-  const resultado=atualizarEstoque(novoEstoque);
+app.patch('/estoque/:id', validarId, validarBody, (req, res) => {
+  const id=req.params.id;
+  const {estoque} = req.body;
 
-  if (resultado.sucesso) {
-    res.json({ mensagem: resultado.mensagem });
-  } else {
-    res.status(500).json({ mensagem: resultado.mensagem });
-  }
-  
+  const sql = `UPDATE estoque SET estoque=? WHERE id=?;`
+
+  db.run(sql,[estoque,id], function(err) {
+    if (err) {
+      return res.status(500).json({erro:"erro de servidor"})
+    }
+    if(this.changes===0){
+      return res.status(404).json({erro:"id não encontrado"})
+    }
+    return res.status(200).json({mensagem: "Estoque alterado com sucesso" })
+  })
 })
+
+app.delete('/estoque/:id', validarId, (req,res)=>{
+
+})
+
+module.exports = db;
 
 app.listen(PORT, () => {
   console.log(` Servidor rodando em http://localhost:${PORT}`);

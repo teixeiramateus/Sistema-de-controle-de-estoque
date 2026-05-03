@@ -19,6 +19,7 @@
   },
   "homepage": "https://gitlab.com/teixeiramateus-group/sistema-de-controle-de-estoque#readme",
   "dependencies": {
-    "express": "^5.1.0"
+    "express": "^5.1.0",
+    "sqlite3": "^6.0.1"
   }
 }
