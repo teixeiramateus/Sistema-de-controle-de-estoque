@@ -17,62 +17,85 @@ async function carregarProdutos() {
         return;
     }
 
-   produtos.forEach(produto => {
-    const item = document.createElement('span');
-    item.textContent = `ID: ${produto.id} | ${produto.nome} | Estoque Médio: ${produto.estoqueMedio} | Estoque: ${produto.estoque}`;
+    produtos.forEach(produto => {
+        const item = document.createElement('div');
+        item.classList.add('info-produto');
 
-    const caixa = document.createElement('input');
-    caixa.type = 'number';
-    caixa.placeholder = 'Qtd';
-    caixa.id = `quantidade-${produto.id}`;
+        const nome = document.createElement('div');
+        nome.classList.add('nome-produto');
+        nome.textContent = produto.nome;
 
-    const operacaoAdicionar = document.createElement('input');
-    operacaoAdicionar.type = 'radio';
-    operacaoAdicionar.name = `operacaoAdicionar-${produto.id}`;
-    operacaoAdicionar.value = 'adicionar';
-    operacaoAdicionar.id = `adicionar-${produto.id}`;
+        const detalhes = document.createElement('div');
+        detalhes.classList.add('detalhes-produto');
 
-    const labelAdicionar = document.createElement('label');
-    labelAdicionar.htmlFor = `adicionar-${produto.id}`;
-    labelAdicionar.textContent = 'Adicionar';
+        detalhes.innerHTML = `
+    <span>ID: ${produto.id}</span>
+    <span>Estoque médio: ${produto.estoqueMedio}</span>
+    <span class="estoque-atual">Estoque: ${produto.estoque}</span>
+`;
 
-    const operacaoRemover = document.createElement('input');
-    operacaoRemover.type = 'radio';
-    operacaoRemover.name = `operacaoAdicionar-${produto.id}`;
-    operacaoRemover.value = 'remover';
-    operacaoRemover.id = `remover-${produto.id}`;
+        item.append(nome, detalhes);
 
-    const labelRemover = document.createElement('label');
-    labelRemover.htmlFor = `remover-${produto.id}`;
-    labelRemover.textContent = 'Remover';
+        const caixa = document.createElement('input');
+        caixa.type = 'number';
+        caixa.placeholder = 'Qtd';
+        caixa.id = `quantidade-${produto.id}`;
+        caixa.classList.add('input-qtd');
 
-    const linha = document.createElement('div');
-    linha.classList.add('linha-produto');
+        const operacaoAdicionar = document.createElement('input');
+        operacaoAdicionar.type = 'radio';
+        operacaoAdicionar.name = `operacaoAdicionar-${produto.id}`;
+        operacaoAdicionar.value = 'adicionar';
+        operacaoAdicionar.id = `adicionar-${produto.id}`;
 
-    linha.append(
-        item,
-        caixa,
-        operacaoAdicionar,
-        labelAdicionar,
-        operacaoRemover,
-        labelRemover
-    );
+        const labelAdicionar = document.createElement('label');
+        labelAdicionar.htmlFor = `adicionar-${produto.id}`;
+        labelAdicionar.textContent = 'Adicionar';
 
-    lista.appendChild(linha);
-});
+        const operacaoRemover = document.createElement('input');
+        operacaoRemover.type = 'radio';
+        operacaoRemover.name = `operacaoAdicionar-${produto.id}`;
+        operacaoRemover.value = 'remover';
+        operacaoRemover.id = `remover-${produto.id}`;
+
+        const labelRemover = document.createElement('label');
+        labelRemover.htmlFor = `remover-${produto.id}`;
+        labelRemover.textContent = 'Remover';
+
+        const linha = document.createElement('div');
+        linha.classList.add('linha-produto');
+
+        const radioGroup = document.createElement('div');
+        radioGroup.classList.add('radio-group');
+
+        radioGroup.append(
+            operacaoAdicionar,
+            labelAdicionar,
+            operacaoRemover,
+            labelRemover
+        );
+
+        linha.append(
+            item,
+            caixa,
+            radioGroup
+        );
+
+        lista.appendChild(linha);
+    });
 }
 
 function pegarDados() {
     let novoEstoque = [];
     const linhas = document.querySelectorAll('.linha-produto');
-   for (const linha of linhas) {
+    for (const linha of linhas) {
 
         const textoSpan = linha.querySelector('span').textContent;
 
         const quantidadeInput = linha.querySelector(`input[type="number"]`);
 
         if (!quantidadeInput.value) {
-            continue;        
+            continue;
         }
 
         const quantidadeModificada = parseInt(quantidadeInput.value);
@@ -103,21 +126,21 @@ function pegarDados() {
 }
 
 async function enviarDados() {
-    let novoEstoque=pegarDados()
+    let novoEstoque = pegarDados()
     console.log(novoEstoque);
     if (typeof novoEstoque === 'string') {
         alert(novoEstoque);
         return;
     }
-    const resposta=await fetch(`${apiUrl}/estoque`, {
+    const resposta = await fetch(`${apiUrl}/estoque`, {
         method: 'PATCH',
         headers: {
             'Content-type': 'application/json'
         },
         body: JSON.stringify(novoEstoque)
-        });
-    const resultado=await resposta.json();
+    });
+    const resultado = await resposta.json();
     alert(resultado.mensagem);
-    window.location.href='inicial.html';
+    window.location.href = 'inicial.html';
 }
 carregarProdutos();

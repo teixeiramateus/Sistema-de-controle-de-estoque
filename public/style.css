@@ -139,3 +139,135 @@ input[type="submit"]:hover {
     color: #006108;
     font-weight: bold;
 }
+#listaprodutos {
+    margin-top: 20px;
+}
+
+.linha-produto {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+    background-color: #ffffff;
+    border: 1px solid #e0dcd7;
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 12px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.linha-produto span {
+    flex: 1 1 100%;
+    font-weight: 600;
+    color: #4b3621;
+}
+
+.linha-produto input[type="number"] {
+    width: 80px;
+    padding: 8px;
+    border: 1px solid #cbb69d;
+    border-radius: 5px;
+    transition: border 0.2s, box-shadow 0.2s;
+}
+
+.linha-produto input[type="number"]:focus {
+    border-color: #8b5e34;
+    box-shadow: 0 0 4px rgba(139, 94, 52, 0.3);
+}
+
+.radio-group {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.linha-produto label {
+    margin-right: 10px;
+    cursor: pointer;
+    font-weight: 500;
+}
+
+
+#btnalterar {
+    margin-top: 20px;
+    width: 100%;
+    background-color: #8b5e34;
+    color: #fff;
+    border: none;
+    padding: 14px;
+    border-radius: 6px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+#btnalterar:hover {
+    background-color: #734d2a;
+    transform: scale(1.02);
+}
+
+
+@media (max-width: 600px) {
+    .linha-produto {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .linha-produto span {
+        font-size: 14px;
+    }
+
+    .linha-produto input[type="number"] {
+        width: 100%;
+    }
+}
+
+.nome-produto {
+    font-size: 18px;
+    font-weight: bold;
+    color: #4b3621;
+    margin-bottom: 5px;
+}
+
+.detalhes-produto {
+    display: flex;
+    gap: 15px;
+    font-size: 14px;
+    color: #6b4f2c;
+    flex-wrap: wrap;
+}
+
+.estoque-atual {
+    font-weight: bold;
+}
+
+.linha-produto input[type="radio"] {
+    display: none;
+}
+
+.linha-produto label {
+    display: inline-block;
+    padding: 6px 14px;
+    border: 2px solid #8b5e34;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+    color: #8b5e34;
+    background-color: transparent;
+    transition: all 0.2s ease;
+}
+
+.linha-produto label:hover {
+    background-color: #f3e8dc;
+}
+
+.linha-produto input[type="radio"]:checked + label {
+    background-color: #8b5e34;
+    color: #fff;
+}
+
+.linha-produto label:active {
+    transform: scale(0.95);
+}
