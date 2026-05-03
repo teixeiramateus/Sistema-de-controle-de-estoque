@@ -1,3 +1,5 @@
+const apiUrl = 'http://localhost:3000';
+
 function impedirRecarregamento() {
     document.getElementById('formulario').addEventListener('submit', async (event) => {
         event.preventDefault();
@@ -7,16 +9,15 @@ function impedirRecarregamento() {
 function pegarDados() {
     let novoProduto = {
         nome: document.getElementById("nome").value,
-        quantidade: parseInt(document.getElementById("quantidade").value),
-        estoqueMedio: parseInt(document.getElementById("estoqueMedio").value),
-        id: undefined
+        estoque: parseInt(document.getElementById("quantidade").value),
+        estoqueMedio: parseInt(document.getElementById("estoqueMedio").value)
 }
     return novoProduto;
 }
 
 async function enviarDados() {
     let novoProduto = pegarDados();
-    const resposta = await fetch('/adicionarproduto', {
+    const resposta = await fetch(`${apiUrl}/estoque`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'

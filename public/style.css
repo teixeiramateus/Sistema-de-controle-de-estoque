@@ -42,7 +42,7 @@ a.botao:hover {
     transform: scale(1.05);
 }
 
-#formulario-registro {
+#formulario {
     max-width: 400px;
     margin: 40px auto;
     background-color: #faf9f8;
@@ -60,8 +60,8 @@ label {
 }
 
 #estoqueMedio,
-#nome-registro,
-#quantidade-registro {
+#nome,
+#quantidade {
     width: 100%;
     padding: 10px;
     border: 1px solid #cbb69d;

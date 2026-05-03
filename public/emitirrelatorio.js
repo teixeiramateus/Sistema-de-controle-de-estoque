@@ -1,5 +1,7 @@
+const apiUrl = 'http://localhost:3000';
+
 async function receberDados() {
-    const res = await fetch('/listarprodutos');
+    const res = await fetch(`${apiUrl}/estoque`);
     return await res.json();
 }
 
@@ -25,13 +27,13 @@ async function carregarProdutos() {
     `;
 
     const quantidadeEmEstoque = document.createElement('p');
-    quantidadeEmEstoque.textContent = `Quantidade em Estoque: ${produto.quantidade}`;
+    quantidadeEmEstoque.textContent = `Quantidade em Estoque: ${produto.estoque}`;
 
-    if (produto.quantidade <= produto.estoqueMedio/10) {
+    if (produto.estoque <= produto.estoqueMedio/10) {
         quantidadeEmEstoque.classList.add('estoque-muito-baixo');
     }
 
-    else if (produto.quantidade <= produto.estoqueMedio) {
+    else if (produto.estoque <= produto.estoqueMedio) {
         quantidadeEmEstoque.classList.add('estoque-baixo');
     }
 

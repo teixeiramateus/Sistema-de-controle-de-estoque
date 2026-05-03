@@ -1,5 +1,7 @@
+const apiUrl = 'http://localhost:3000';
+
 async function receberDados() {
-    const res = await fetch('/listarprodutos');
+    const res = await fetch(`${apiUrl}/estoque`);
     return await res.json();
 }
 
@@ -17,7 +19,7 @@ async function carregarProdutos() {
 
    produtos.forEach(produto => {
     const item = document.createElement('span');
-    item.textContent = `ID: ${produto.id} | ${produto.nome} | Estoque Médio: ${produto.estoqueMedio} | Estoque: ${produto.quantidade}`;
+    item.textContent = `ID: ${produto.id} | ${produto.nome} | Estoque Médio: ${produto.estoqueMedio} | Estoque: ${produto.estoque}`;
 
     const caixa = document.createElement('input');
     caixa.type = 'number';
@@ -102,12 +104,13 @@ function pegarDados() {
 
 async function enviarDados() {
     let novoEstoque=pegarDados()
+    console.log(novoEstoque);
     if (typeof novoEstoque === 'string') {
         alert(novoEstoque);
         return;
     }
-    const resposta=await fetch('/alterarEstoque', {
-        method: 'POST',
+    const resposta=await fetch(`${apiUrl}/estoque`, {
+        method: 'PATCH',
         headers: {
             'Content-type': 'application/json'
         },

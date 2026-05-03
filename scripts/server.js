@@ -1,8 +1,10 @@
 const express = require('express');
+const cors = require('cors');
 const sqlite = require('sqlite3').verbose();
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+app.use(cors());
 app.use(express.json());
 
 const db = new sqlite.Database("bancoDeDados.sqlite");
@@ -42,7 +44,7 @@ app.post('/estoque', validarBody, (req, res) => {
        return res.status(500).json({erro:"erro de servidor"})
     }
 
-    return res.status(201).json({id: this.lastID, nome, estoque, estoqueMedio})
+    return res.status(201).json({mensagem: "Produto adicionado com sucesso"})
   })
 })
 
